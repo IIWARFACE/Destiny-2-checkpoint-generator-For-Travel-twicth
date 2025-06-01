@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Destiny 2 Checkpoint Generator</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #111; color: #eee; }
+    input { padding: 5px; font-size: 16px; width: 300px; margin-bottom: 10px; }
+    h3 { color: #00d8ff; }
+    .command {
+      background: #222; padding: 10px; margin: 5px 0;
+      font-family: monospace; white-space: pre;
+      border-left: 4px solid #44f;
+      cursor: pointer;
+    }
+    .command:hover {
+      background-color: #333;
+    }
+    .twitch-link {
+      margin: 10px 0 20px;
+      display: block;
+      font-size: 16px;
+      color: #58a6ff;
+      text-decoration: none;
+    }
+    .twitch-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔧 Destiny 2 Checkpoint Generator</h2>
+  <label for="bungieName">Enter your Bungie Name:</label><br>
+  <input type="text" id="bungieName" value="VotreBungieName#0000" oninput="updateCommands()"><br>
+
+  <a class="twitch-link" href="https://www.twitch.tv/travelerschosenteam" target="_blank">
+    🔗 Go to Traveler's Chosen Twitch to paste your command
+  </a>
+
+  <p><small>💡 Click on any command to copy it to clipboard</small></p>
+
+  <div id="commands"></div>
+
+<script>
+  const commandGroups = {"Crota’s End (CE)": ["ce abyss n", "ce crota n"], "Root of Nightmares (RoN)": ["ron chest1 n", "ron chest2 n", "ron nezarec n"], "King’s Fall (KF)": ["kf maze n", "kf wall n", "kf oryx n"], "Vow of the Disciple (VotD)": ["votd chest1 n", "votd chest2 n", "votd rhulk n", "votd exhibition m", "votd rhulk m"], "Vault of Glass (VoG)": ["vog confluxes n", "vog post-templar n", "vog gatekeeper n"], "Deep Stone Crypt (DSC)": ["dsc chest2 n", "dsc taniks n"], "Garden of Salvation (GoS)": ["gos chest1 n", "gos chest2 n", "gos sanctified n", "gos boss n"], "Last Wish (LW)": ["lw shuro-chi n", "lw morgeth n", "lw queenswalk n"], "Salvation’s Edge (SE)": ["se chest1 n", "se chest2 n", "se witness n", "se witness m"], "Sundered Doctrine (SD)": ["sd chest1 n", "sd chest2 n", "sd boss n", "sd boss m"], "Warlord’s Ruin (WR)": ["wr chest1 n", "wr chest2 n", "wr boss n", "wr boss m"], "Ghosts of the Deep (GotD) – Ultimatum": ["gotd chest1 ultimatum", "gotd chest2 ultimatum", "gotd boss ultimatum"], "Vesper’s Host (VH)": ["vh chest1 n", "vh chest2 n", "vh boss n"], "Spire of the Watcher (SotW)": ["sotw chest1 n", "sotw chest2 n", "sotw boss n"], "Duality (D)": ["d chest1 n", "d chest2 n", "d boss n"], "Grasp of Avarice (GoA)": ["goa chest1 n", "goa chest2 n", "goa boss n", "goa boss m"], "Prophecy (P)": ["p chest n", "p boss n"], "Pit of Heresy (PoH)": ["poh boss n"], "Shattered Throne (ST)": ["st boss n"]};
+
+  function updateCommands() {
+    const bungieName = document.getElementById("bungieName").value;
+    const container = document.getElementById("commands");
+    container.innerHTML = "";
+    for (const [activity, cmds] of Object.entries(commandGroups)) {
+      const section = document.createElement("div");
+      const title = document.createElement("h3");
+      title.textContent = activity;
+      section.appendChild(title);
+      cmds.forEach(c => {
+        const fullCmd = "!queue " + c + " " + bungieName;
+        const div = document.createElement("div");
+        div.className = "command";
+        div.textContent = fullCmd;
+        div.onclick = () => {
+          navigator.clipboard.writeText(fullCmd);
+          div.style.background = "#3a3";
+          setTimeout(() => div.style.background = "#222", 500);
+        };
+        section.appendChild(div);
+      });
+      container.appendChild(section);
+    }
+  }
+
+  window.onload = updateCommands;
+</script>
+</body>
+</html>
